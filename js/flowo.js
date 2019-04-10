@@ -29,52 +29,26 @@
                 temp += '</div>'
             }
             this.$elem.empty().append(temp);
-            this.setpos();
             this.bindTempClick();
             this.bindCardClick();
+            this.setLine();
 
         },
         render: function() {
-            var idx = 0; //层级
-            var arr = [];
+            var d = true; //区分子元素不同父元素分节点
             var that = this;
-            var temp = '<div class="flow-con">';
-            traverseTree(this.config.data[0]);
-
-            function traverseTree(node) {
-                if (!node) {
-                    return;
-                }
-                traverseNode(node)
-                if (node.children && node.children.length > 0) {
-                    idx += 1;
-                    temp += '<div class="flow-children">';
-                    for (var i = 0; i < node.children.length; i++) {
-                        console.log(node.children[i].id);
-                        console.log(idx);
-                        console.log(node.children.length);
-                        arr.push(node.children.length);
-                        temp += '<div class="flow-con" style="left:340px;top:' + i * 370 + 'px">';
-                        traverseTree(node.children[i]);
-                        temp += '</div>';
-
-                        if (i == node.children.length - 1) {
-
-                            idx -= 1;
-                        }
-                    }
-                    temp += '</div>';
-
-                }
-
-
-            }
-            console.log(arr);
-
-            function traverseNode(node) {
-                temp += that.temp(node);
-            }
-            temp += '</div>';
+            var temp = '';
+            this.config.data.forEach(function(pnode) {
+                temp += '<div class="flow-con">';
+                pnode.forEach(function(snode) {
+                    temp += '<div class="item-type">';
+                    snode.forEach(function(item) {
+                        temp += that.temp(item)
+                    })
+                    temp += '</div>'
+                })
+                temp += '</div>';
+            })
             return temp;
         },
         bindTempClick: function() {
@@ -83,9 +57,7 @@
             this.$elem.on('click', '.btn-app', function() {
                 var type = $(this).attr('data-type');
                 var id = $(this).attr('data-id');
-                console.log(type);
-                console.log(id);
-                self.changeChild(self.config.data, id, type);
+                self.changeChild(id, type);
                 self.renderDom();
             })
         },
@@ -106,15 +78,16 @@
             this.$elem.on('click', '[data-action=add-flow]', function(event) {
                 event.stopPropagation();
                 if ($(this).attr('data-cid') !== '') return false;
-                var id = $(this).attr('data-pid');
+                var pid = $(this).attr('data-pid');
                 var pos = $(this).attr('data-index');
                 var nid = self.getID(4);
                 var obj = {
+                    rid: pid,
                     id: nid,
                     name: '',
                     type: 'init',
                 };
-                self.addChild(self.config.data, id, obj, pos);
+                self.addChild(obj, pos);
                 self.renderDom();
             })
             this.$elem.on('click', '[data-action=del-flow]', function(event) {
@@ -122,106 +95,190 @@
                 if ($(this).attr('data-cid') !== '') {
                     var id = $(this).attr('data-pid');
                     var pos = $(this).attr('data-index');
-                    self.delChild(self.config.data, id, pos);
+                    self.delChild(id, pos);
                     self.renderDom();
                 }
                 $(this).closest('.quick_item').remove();
 
             })
-            this.$elem.on('click', 'a[data-action=act]', function(event) {
-                event.stopPropagation();
-                if ($(this).hasClass('disabled')) return false;
-                var id = $(this).attr('data-id');
-                var type = $(this).attr('data-type');
-                if (typeof(self.config.onAct) === 'function') {
-                    self.config.onAct(id, type);
-                }
-            })
-            this.$elem.on('click', 'a[data-action=del]', function(event) {
-                event.stopPropagation();
-                if ($(this).hasClass('disabled')) return false;
-                var id = $(this).attr('data-id');
-                var type = $(this).attr('data-type');
-                if (typeof(self.config.onDel) === 'function') {
-                    self.config.onDel(id, type);
-                }
-            })
         },
         //查找ID对象
-        findObj: function(arr, id) {
-            var that = this;
-            arr.forEach(function(item) {
-                if (item.id == id) {
-                    that.findItem = item;
-                    return item;
-                } else if (item.children.length > 0) {
-                    that.findObj(item.children, id);
-                }
+        findChild: function(id) {
+            var res = { node: [], fi: "", si: "" };
+            this.config.data.forEach(function(pnode, fi) {
+
+                pnode.forEach(function(snode, si) {
+                    snode.forEach(function(item) {
+                        if (item.rid === id) {
+                            res.node = snode;
+                            res.fi = fi;
+                            res.si = si;
+                            return;
+
+                        }
+                    })
+
+                })
+
             })
+            return res;
+        },
+        findParent: function(cid) {
+            var res = { node: [], fi: "", si: "", ti: "" };
+            this.config.data.forEach(function(pnode, fi) {
+                pnode.forEach(function(snode, si) {
+                    snode.forEach(function(item, ti) {
+                        if (item.id === cid) {
+                            res.node = snode;
+                            res.fi = fi;
+                            res.si = si;
+                            res.ti = ti;
+                            return;
+
+                        }
+                    })
+
+                })
+
+            })
+            return res;
         },
         //添加对象@arr=config.data,@id要添加children的id,@child要添加的对象
-        addChild: function(arr, id, child, pos) {
+        addChild: function(child, pos) {
             var that = this;
-            arr.forEach(function(item) {
-                if (item.id == id) {
-                    console.log(item);
-                    if (item.children && item.children.length > 0) {
-                        item.children.splice(pos, 0, child);
-                    } else {
-                        item["children"] = new Array()
-                        item.children.push(child);
+            var flag = true;
+            var item = this.findParent(child.rid);
+            if (item.fi === this.config.data.length - 1) {
+                var arrobj = [
+                    [child]
+                ];
+                this.config.data.push(arrobj);
+                return false;
+            }
+            try { 
+                this.config.data.forEach(function(pnode) {
 
-                    }
-                    return;
-                } else if (item.children && item.children.length > 0) {
-                    that.addChild(item.children, id, child, pos);
+                    pnode.forEach(function(snode) {
+
+                        snode.forEach(function(item) {
+                            if (item.rid === child.rid) {
+                                snode.splice(pos, 0, child);
+                                throw new Error('ending');
+                            }
+                        })
+
+                    })
+
+                })
+            } catch (e) { 
+                if (e.message == "ending") {
+                    flag = false;
                 }
-            })
+            }
+            if (flag === true) {
+                var arrobj = [child];
+                this.config.data[item.fi + 1].splice(item.ti, 0, arrobj);
+                return false;
+            }
+            console.log(flag)
+            console.log(this.config.data);
         },
         //添加对象@arr=config.data,@id要删除children的pid,@pos要删除child数组索引
-        delChild: function(arr, id, pos) {
-            var that = this;
-            arr.forEach(function(item) {
-                if (item.id == id) {
-                    console.log(item)
-                    if (item.children && item.children.length === 1) {
-                        delete item["children"];
-                    }
-                    if (item.children && item.children.length > 1) {
-                        item.children.splice(pos, 1);
-                    }
-                    return;
-                } else if (item.children && item.children.length > 0) {
-                    that.delChild(item.children, id, pos);
-                }
-            })
-        },
-        changeChild: function(arr, id, type) {
-            var that = this;
-            arr.forEach(function(item) {
-                if (item.id == id) {
-                    console.log(item)
-                    item.type = type
-                    return;
-                } else if (item.children && item.children.length > 0) {
-                    that.changeChild(item.children, id, type);
-                }
-            })
-        },
-        setpos: function() {
-            var that = this;
-            this.config.data.forEach(function(item) {
-                if (item.children && item.children.length > 0) {
+        delChild: function(id, pos) {
+            console.log(id);
+            var item = this.findChild(id);
+            console.log(item);
+            if (item.node.length > 0) {
+                alert("清先删除子元素");
+                return false;
+            }
+            /* try { 
+                this.config.data.forEach(function(pnode) {
 
+                    pnode.forEach(function(snode) {
+
+                        snode.forEach(function(item) {
+                            if (item.id === id) {
+                                snode.splice(pos, 1);
+                                throw new Error('ending');
+                            }
+                        })
+
+                    })
+
+                })
+            } catch (e) { } */
+            console.log(this.config.data);
+        },
+        changeChild: function(id, type) {
+            try { 
+                this.config.data.forEach(function(pnode) {
+
+                    pnode.forEach(function(snode) {
+
+                        snode.forEach(function(item) {
+                            if (item.id === id) {
+                                item.type = type;
+                                throw new Error('ending');
+                            }
+                        })
+
+                    })
+
+                })
+            } catch (e) { }
+        },
+        setLine: function() {
+
+            var str = '';
+            var $flow = this.$elem.find('.flow-con');
+            var pointArr = []
+            $flow.each(function(fi, fele) {
+                var fh = [];
+                $(this).find('.flow-item').each(function(ti, tele) {
+                    var itemh = $(this).position().top;
+                    $(this).find('.quick_item').each(function(li, lele) {
+                        var py = itemh + parseInt($(this).position().top) + 36;
+                        var cid = $(this).find('.del_quick_btn_con').attr('data-cid');
+                        var cy = $('.flow-item[data-id=' + cid + ']').position().top + $('.flow-item[data-id=' + cid + ']').height() / 2;
+                        var point = [2, py, 62, cy];
+                        fh.push(point);
+                    })
+
+                })
+                if (fh.length > 0) {
+                    pointArr.push(fh);
                 }
+
             })
+            if (pointArr.length > 0) {
+                var str = '';
+
+                pointArr.forEach(function(ele, i) {
+                    var l = 318 + 350 * i;
+                    str += '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="top:0;left:' + l + 'px">';
+                    ele.forEach(function(item, j) {
+                        str += '<g>\
+                     <circle cx="' + item[0] + '" cy="' + item[1] + '" r="2" fill="#ccc" />\
+                     <line x1="' + item[0] + '" y1="' + item[1] + '" x2="' + item[2] + '" y2="' + item[3] + '" style="stroke:#ccc;stroke-width:1" />\
+                     <circle cx="' + item[2] + '" cy="' + item[3] + '" r="3" fill="#ccc" />\
+                     </g>'
+                    })
+                    str += '</svg>'
+                })
+                this.$elem.prepend(str);
+            }
+
+
         },
         //随机ID
         getID: function(length) {
             return Number(Math.random().toString().substr(3, length) + Date.now()).toString(36);
         },
         temp: function(node) {
+
             var s = '';
+            var item = this.findChild(node.id);
             switch (node.type) {
                 case 'text':
                     s += tempText(node);
@@ -251,7 +308,7 @@
             return s;
 
             function tempImgText(node) {
-                var str = '<div class="flow-item" style="">\
+                var str = '<div class="flow-item" style="" data-id="' + node.id + '">\
                 <div class="row form-group form-horizontal">\
                     <label class="col-xs-4 no-padding-right control-label">素材名稱<span class="required" aria-required="true">* </span></label>\
                     <div class="col-xs-8 no-padding-right"><input type="text" class="form-control" name=""></div>\
@@ -288,7 +345,7 @@
             }
 
             function tempImg(node) {
-                var str = '<div class="flow-item">\
+                var str = '<div class="flow-item" data-id="' + node.id + '">\
                 <div class="row form-group form-horizontal">\
                     <label class="col-xs-4 no-padding-right control-label">素材名稱<span class="required" aria-required="true">* </span></label>\
                     <div class="col-xs-8 no-padding-right"><input type="text" class="form-control" name=""></div>\
@@ -303,9 +360,9 @@
                     </div>\
                     <div>\
                     <div class="card-quick-replies quick_btn_div_contaiter" id="">';
-                if (node.children && node.children.length > 0) {
-                    for (var i = 0; i < node.children.length; i++) {
-                        str += '<div class="item quick_item"><div class="flex flex-justify--between"><button type="button" class="card-btn card-grey delete del_quick_btn_con" data-cid="' + node.children[i].id + '" data-pid="' + node.id + '" data-type="' + node.type + '" data-action="del-flow" data-index="' + i + '"> <i class="fa fa-trash-o bigger-120"></i> </button> <input type="text" placeholder="按鈕標題" value="' + node.children[i].name + '" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="' + node.children[i].id + '" data-pid="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" data-index="' + i + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div><input type="hidden" value="" class="reply_material_id" name="reply_material_id"><input type="hidden" value="" class="btn_type" name="btn_type"> </div>';
+                if (item.node && item.node.length > 0) {
+                    for (var i = 0; i < item.node.length; i++) {
+                        str += '<div class="item quick_item"><div class="flex flex-justify--between"><button type="button" class="card-btn card-grey delete del_quick_btn_con" data-cid="' + item.node[i].id + '" data-pid="' + node.id + '" data-type="' + node.type + '" data-action="del-flow" data-index="' + i + '"> <i class="fa fa-trash-o bigger-120"></i> </button> <input type="text" placeholder="按鈕標題" value="' + item.node[i].name + '" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="' + item.node[i].id + '" data-pid="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" data-index="' + i + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div><input type="hidden" value="" class="reply_material_id" name="reply_material_id"><input type="hidden" value="" class="btn_type" name="btn_type"> </div>';
                     }
                 };
                 str += '<div class="item item-nogap quick_btn_div" data-pid="' + node.id + '" data-type="' + node.type + '">\
@@ -315,7 +372,7 @@
             }
 
             function tempText(node) {
-                var str = '<div class="flow-item">\
+                var str = '<div class="flow-item" data-id="' + node.id + '">\
                 <div class="row form-group form-horizontal">\
                     <label class="col-xs-4 no-padding-right control-label">素材名稱<span class="required" aria-required="true">* </span></label>\
                     <div class="col-xs-8 no-padding-right"><input type="text" class="form-control" name=""></div>\
@@ -335,9 +392,9 @@
                     </div>\<div>\
                     <div class="or">或</div>\
                         <div class="card-quick-replies quick_btn_div_contaiter" id="">';
-                if (node.children && node.children.length > 0) {
-                    for (var i = 0; i < node.children.length; i++) {
-                        str += '<div class="item quick_item"><div class="flex flex-justify--between"><button type="button" class="card-btn card-grey delete del_quick_btn_con" data-cid="' + node.children[i].id + '" data-pid="' + node.id + '" data-type="' + node.type + '" data-action="del-flow" data-index="' + i + '"> <i class="fa fa-trash-o bigger-120"></i> </button> <input type="text" placeholder="按鈕標題" value="' + node.children[i].name + '" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="' + node.children[i].id + '" data-pid="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" data-index="' + i + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div><input type="hidden" value="" class="reply_material_id" name="reply_material_id"><input type="hidden" value="" class="btn_type" name="btn_type"> </div>';
+                if (item.node && item.node.length > 0) {
+                    for (var i = 0; i < item.node.length; i++) {
+                        str += '<div class="item quick_item"><div class="flex flex-justify--between"><button type="button" class="card-btn card-grey delete del_quick_btn_con" data-cid="' + item.node[i].id + '" data-pid="' + node.id + '" data-type="' + node.type + '" data-action="del-flow" data-index="' + i + '"> <i class="fa fa-trash-o bigger-120"></i> </button> <input type="text" placeholder="按鈕標題" value="' + item.node[i].name + '" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="' + item.node[i].id + '" data-pid="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" data-index="' + i + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div><input type="hidden" value="" class="reply_material_id" name="reply_material_id"><input type="hidden" value="" class="btn_type" name="btn_type"> </div>';
                     }
                 };
                 str += '<div class="item item-nogap quick_btn_div" data-pid="' + node.id + '" data-type="' + node.type + '">\
@@ -387,7 +444,7 @@
                         text: '檔案'
                     }
                 ];
-                var str = '<div class="flow-item"><p class="flow-tit">请點選以下任意素材，開始建立</p>';
+                var str = '<div class="flow-item" data-id="' + node.id + '"><p class="flow-tit">请點選以下任意素材，開始建立</p>';
                 for (var i = 0; i < tempArr.length; i++) {
                     str += '<button data-id="' + node.id + '" data-type="' + tempArr[i].type + '" class="btn btn-app"><i class="ace-icon fa size-18 ' + tempArr[i].icon + '"></i>' + tempArr[i].text + '</button>';
                 };

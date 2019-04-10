@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
     <link rel="stylesheet" href="./css/components.css" />
     <link rel="stylesheet" href="./css/font-awesome.min.css" />
-    <link rel="stylesheet" id="css" href="./css/style.css" />
+    <link rel="stylesheet" id="css" href="./css/styleo.css" />
 </head>
 
 <body>
@@ -459,80 +459,71 @@
 
         <script src="./js/jquery.min.js"></script>
         <script src="./js/bootstrap.min.js"></script>
-        <script src="./js/material.js"></script>
-        <script src="./js/flow.js"></script>
+        <script src="./js/flowo.js"></script>
         <script>
             /*type类型7种： text:文字区块, img:單一圖片區塊, img-text:图文组合, catalog：型录, video:影片, audio:音讯, file:档案*/
-            /*@idx 层级*/
-            var josnData = {
-                id: "",
-                idx: 0,
-                name: '我是文字',
-                type: 'text',
-                children: [{
-                    id: "",
-                    idx: 1,
-                    name: '我是图片',
-                    type: 'img',
-                    children: [{
-                        id: "",
-                        idx: 1,
-                        name: '我是图片',
-                        type: 'img'
+
+            var otherData = [
+                [
+                    [{
+                        rid: '',
+                        id: '100',
+                        name: '我是一列文字',
+                        type: 'text'
                     }]
-                }]
-            };
-            var otherData = {
-                0: [{
-                    rid: '',
-                    id: 'aa',
-                    name: 'wwiewo',
-                    type: 'text'
-                }],
-                1: [{
-                    rid: 'aa',
-                    id: 'bb',
-                    name: 'weiw',
-                    type: 'img'
-                }, {
-                    rid: 'aa',
-                    id: 'bd',
-                    name: 'weiw',
-                    type: 'text'
-                }],
-                2: [{
-                    rid: 'bb',
-                    id: 'cb',
-                    name: 'weiw',
-                    type: 'img'
-                }, {
-                    rid: 'bb',
-                    id: 'cbb',
-                    name: 'weiw',
-                    type: 'img'
-                }, {
-                    rid: 'bd',
-                    id: 'cdd',
-                    name: 'weiw',
-                    type: 'text'
-                }],
-                3: [{
-                    rid: 'cbb',
-                    id: 'db',
-                    name: 'weiw',
-                    type: 'img'
-                }, {
-                    rid: 'bb',
-                    id: 'cbb',
-                    name: 'weiw',
-                    type: 'img'
-                }, {
-                    rid: 'cbb',
-                    id: 'dbb',
-                    name: 'weiw',
-                    type: 'text'
-                }]
-            }
+                ],
+                [
+                    [{
+                        rid: '100',
+                        id: '200',
+                        name: '我是二列图片',
+                        type: 'img'
+                    }, {
+                        rid: '100',
+                        id: '210',
+                        name: '我是二列文字',
+                        type: 'text'
+                    }]
+                ],
+                [
+                    [{
+                        rid: '200',
+                        id: '300',
+                        name: '我是三列1组图片',
+                        type: 'img'
+                    }, {
+                        rid: '200',
+                        id: '320',
+                        name: '我是三列1组图片',
+                        type: 'img'
+                    }],
+                    /*  [{
+                         rid: '210',
+                         id: '310',
+                         name: '我是三列2组文字',
+                         type: 'text'
+                     }] */
+                ],
+                /*  [
+                    [{
+                        rid: '300',
+                        id: '400',
+                        name: '我是四列1组图片',
+                        type: 'img'
+                    }, {
+                        rid: '300',
+                        id: '410',
+                        name: '我是四列1组图片',
+                        type: 'img'
+                    }],
+                    [{
+                        rid: '310',
+                        id: '420',
+                        name: '我是四列2组文字',
+                        type: 'text'
+                    }]
+                ] */
+            ]
 
 
 
