@@ -462,7 +462,7 @@
         <script src="./js/flowo.js"></script>
         <script>
             /*type类型7种： text:文字区块, img:單一圖片區塊, img-text:图文组合, catalog：型录, video:影片, audio:音讯, file:档案*/
-
+            //整体为一个数组，第一层数组代表渲染的每一列，第二层数组代表每一列中的分组；分组中的rid是一致的rid关联父元素id；id是唯一的，第三层数组分组中的单元模块。
             var otherData = [
                 [
                     [{
@@ -494,8 +494,8 @@
                     }, {
                         rid: '200',
                         id: '320',
-                        name: '我是三列1组图片',
-                        type: 'img'
+                        name: '我是三列2组图片',
+                        type: 'text'
                     }],
                     /*  [{
                          rid: '210',
