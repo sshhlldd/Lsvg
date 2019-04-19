@@ -1379,14 +1379,19 @@ div.checker {
     padding-right: 0 !important;
 }
 
-.myflow {
+.myflowcon {
     margin-top: 20px;
     width: 100%;
-    height: 550px;
-    overflow: auto;
-    display: flex;
+    height: 500px;
+    overflow: hidden;
+}
+
+.myflow {
+    width: 100%;
+    height: 100%;
+    /*display: flex;
     display: -webkit-flex;
-    /* align-items: center; */
+  align-items: center; */
     color: #777;
     position: relative;
 }
@@ -1402,21 +1407,22 @@ div.checker {
 }
 
 .flow-con {
-    position: absolute;
-    top: 0;
+    margin: 0 20px;
+    float: left;
+    position: relative;
 }
 
-.item-type {
-    margin: 0px 20px;
-}
+.item-type {}
 
 .flow-item {
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 10px;
-    height: 350px;
-    overflow: auto;
+    /* height: 350px;
+    overflow: auto; */
     width: 290px;
+    margin: 10px;
+    position: relative;
 }
 
 .flow-item .flow-tit {
@@ -1459,5 +1465,107 @@ div.checker {
     padding: 0;
 }
 
+.card .card-quick-replies {
+    position: static;
+}
+
+.mCS-my-theme.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+    background-color: #acacac;
+}
+
+.mCS-my-theme.mCSB_scrollTools .mCSB_draggerRail {
+    background-color: #ccc;
+}
+
 
 /*流程 end*/
+
+
+/*facebook 悬浮提示2019/04/19*/
+
+.mypopover {
+    position: absolute;
+    top: -75px;
+    left: 0;
+    z-index: 1060;
+    max-width: 276px;
+    padding: 1px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    background-color: #f08200;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    animation: popAni 0.7s ease-in-out 0s infinite alternate;
+    -webkit-animation: popAni 0.7s ease-in-out 0s infinite alternate;
+}
+
+.mypopover .arrow {
+    width: 0;
+    height: 0;
+    border-width: 11px 11px 0;
+    border-style: solid;
+    border-color: #ccc transparent transparent;
+    /*灰 透明 透明 */
+    position: absolute;
+    bottom: -11px;
+    left: 50%;
+    margin-left: -10px;
+}
+
+.mypopover .arrow span {
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 11px 11px 0;
+    border-style: solid;
+    border-color: #f08200 transparent transparent;
+    /*黄 透明 透明 */
+    position: absolute;
+    top: -12px;
+    left: -11px;
+}
+
+.mypopover .popover-content {
+    padding: 9px 14px;
+    color: #fff;
+}
+
+.fb-direct {
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.fb-direct i {
+    color: #8dbe4a;
+}
+
+#fb-direct .close {
+    text-indent: 0;
+}
+
+#fb-direct .modal-body {
+    height: 400px;
+    overflow: auto;
+}
+
+@keyframes popAni {
+    from {
+        transform: translate(0, 0)
+    }
+    to {
+        transform: translate(0, 10px)
+    }
+}
+
+@-webkit-keyframes popAni {
+    from {
+        -webkit-transform: translate(0, 0)
+    }
+    to {
+        -webkit-transform: translate(0, 10px)
+    }
+}
+
+
+/*end-facebook 悬浮提示2019/04/19*/
