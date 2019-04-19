@@ -84,6 +84,20 @@
                 $(this).before(s);
 
             })
+            this.$elem.on('click', '.add-btn', function(event) {
+                event.stopPropagation();
+                var type = $(this).attr('data-type');
+                var id = $(this).attr('data-id');
+                var quick = $(this).closest('ul').find('li').length;
+                var s = '<li class="item flex flex-justify--between btnli">\
+                <input type="text" placeholder="按鈕標題" class="inp title" data-id="" data-type="" value="">\
+                <button type="button" data-cid="" data-id="' + id + '" data-type="' + type + '" data-index="' + quick + '" data-action="add-flow" class="card-btn card-grey add_material"><i class="fa fa-plus-square-o bigger-120"></i></button>\
+                <button type="button" data-id="' + id + '" data-index="' + quick + '" data-value="" data-action="add-forward" class="card-btn card-grey"><i class="fa fa-share bigger-120"></i></button>\
+                <button type="button" data-id="' + id + '" data-index="' + quick + '" data-value="" data-action="add-phone" class="card-btn card-grey"><i class="fa fa-phone bigger-120"></i></button>\
+                <button type="button" data-id="' + id + '" data-index="' + quick + '" data-type="" data-action="add-url" class="card-btn card-grey"><i class="fa fa-link bigger-120"></i></button></li>'
+                $(this).before(s);
+
+            })
             this.$elem.on('click', '[data-action=add-flow]', function(event) {
                 event.stopPropagation();
                 if ($(this).attr('data-cid') !== '') return false;
@@ -309,13 +323,26 @@
                 var fh = [];
                 $(this).find('.flow-item').each(function(ti, tele) {
                     var itemh = $(this).position().top;
-                    $(this).find('.quick_item').each(function(li, lele) {
-                        var py = itemh + parseInt($(this).position().top) + 36;
-                        var cid = $(this).find('.add_material').attr('data-cid');
-                        var cy = $('.flow-item[data-id=' + cid + ']').position().top + $('.flow-item[data-id=' + cid + ']').height() / 2;
-                        var point = [2, py, 62, cy];
-                        fh.push(point);
-                    })
+                    if ($(this).find('.btnli').length > 0) {
+                        $(this).find('.btnli').each(function(li, lele) {
+                            var py = itemh + parseInt($(this).position().top) + 100;
+                            console.log($(this).position().top);
+                            var cid = $(this).find('.add_material').attr('data-cid');
+                            var cy = $('.flow-item[data-id=' + cid + ']').position().top + $('.flow-item[data-id=' + cid + ']').height() / 2;
+                            var point = [2, py, 62, cy];
+                            fh.push(point);
+                        })
+                    }
+                    if ($(this).find('.quick_item').length > 0) {
+                        $(this).find('.quick_item').each(function(li, lele) {
+                            var py = itemh + parseInt($(this).position().top) + 36;
+                            var cid = $(this).find('.add_material').attr('data-cid');
+                            var cy = $('.flow-item[data-id=' + cid + ']').position().top + $('.flow-item[data-id=' + cid + ']').height() / 2;
+                            var point = [2, py, 62, cy];
+                            fh.push(point);
+                        })
+                    }
+
 
                 })
                 if (fh.length > 0) {
@@ -460,14 +487,14 @@
                             for (var i = 0; i < node.btnTitle.value.length; i++) {
                                 str += '<li class="item flex flex-justify--between btnli">\
                         <input type="text" placeholder="按鈕標題" class="inp title" data-id="' + node.id + '" data-type="' + node.type + '" value="' + node.btnTitle.value[i].btnName + '">\
-                        <button type="button" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-action="add-material" class="card-btn card-grey"><i class="fa fa-plus-square-o bigger-120"></i></button>\
+                        <button type="button" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" class="card-btn card-grey add_material"><i class="fa fa-plus-square-o bigger-120"></i></button>\
                         <button type="button" data-id="' + node.id + '" data-value="" data-action="add-forward" class="card-btn card-grey"><i class="fa fa-share bigger-120"></i></button>\
                         <button type="button" data-id="' + node.id + '" data-value="' + node.btnTitle.value[i].phone + '" data-action="add-phone" class="card-btn card-grey"><i class="fa fa-phone bigger-120"></i></button>\
                         <button type="button" data-id="' + node.id + '" data-type="' + node.btnTitle.value[i].url + '" data-action="add-url" class="card-btn card-grey"><i class="fa fa-link bigger-120"></i></button>\
                         </li>';
                             }
                         }
-                        str += '<li class="item item-nogap flex flex-justify--between add-btn">\
+                        str += '<li class="item item-nogap flex flex-justify--between add-btn" data-id="' + node.id + '" data-type="' + node.type + '">\
                                         <button type="button" class="card-btn card-grey add bigger-125"><i class="fa fa-plus-circle"></i><span>按鈕</span></button>\
                                     </li>\
                                     </ul>';
