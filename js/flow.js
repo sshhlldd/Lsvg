@@ -80,7 +80,7 @@
                 var type = $(this).attr('data-type');
                 var id = $(this).attr('data-id');
                 var quick = $(this).closest('.quick_btn_div_contaiter').find('.quick_item').length;
-                var s = '<div class="item quick_item"> <div class="flex flex-justify--between"><input type="text" placeholder="按鈕標題" value="" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="" data-id="' + id + '" data-type="' + type + '" data-action="add-flow" data-index="' + quick + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div><input type="hidden" value="" class="reply_material_id" name="reply_material_id"><input type="hidden" value="" class="btn_type" name="btn_type"> </div>'
+                var s = '<div class="item quick_item"> <div class="flex flex-justify--between"><input type="text" placeholder="按鈕標題" value="" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="" data-id="' + id + '" data-type="' + type + '" data-way="quick" data-action="add-flow" data-index="' + quick + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div><input type="hidden" value="" class="reply_material_id" name="reply_material_id"><input type="hidden" value="" class="btn_type" name="btn_type"> </div>'
                 $(this).before(s);
 
             })
@@ -91,7 +91,7 @@
                 var quick = $(this).closest('ul').find('li').length;
                 var s = '<li class="item flex flex-justify--between btnli">\
                 <input type="text" placeholder="按鈕標題" class="inp title" data-id="" data-type="" value="">\
-                <button type="button" data-cid="" data-id="' + id + '" data-type="' + type + '" data-index="' + quick + '" data-action="add-flow" class="card-btn card-grey add_material"><i class="fa fa-plus-square-o bigger-120"></i></button>\
+                <button type="button" data-cid="" data-id="' + id + '" data-type="' + type + '" data-index="' + quick + '" data-way="default" data-action="add-flow" class="card-btn card-grey add_material"><i class="fa fa-plus-square-o bigger-120"></i></button>\
                 <button type="button" data-id="' + id + '" data-index="' + quick + '" data-value="" data-action="add-forward" class="card-btn card-grey"><i class="fa fa-share bigger-120"></i></button>\
                 <button type="button" data-id="' + id + '" data-index="' + quick + '" data-value="" data-action="add-phone" class="card-btn card-grey"><i class="fa fa-phone bigger-120"></i></button>\
                 <button type="button" data-id="' + id + '" data-index="' + quick + '" data-type="" data-action="add-url" class="card-btn card-grey"><i class="fa fa-link bigger-120"></i></button></li>'
@@ -103,12 +103,21 @@
                 if ($(this).attr('data-cid') !== '') return false;
                 var pid = $(this).attr('data-id');
                 var pos = $(this).attr('data-index');
+                var way = $(this).attr('data-way');
                 var nid = self.getID(4);
                 var obj = {
                     rid: pid,
                     id: nid,
                     name: '',
                     type: 'init',
+                    content: { //头部内容例如文字，图片，链接等信息
+                        text: "我知道我知道", //头部文字描述
+                        imgsrc: "" //头部img
+                    },
+                    btnTitle: {
+                        type: way, //@quick快速回复，default普通回复
+                        value: [], //按钮内容
+                    }
                 };
                 self.addChild(obj, pos);
                 self.renderDom();
@@ -487,7 +496,7 @@
                             for (var i = 0; i < node.btnTitle.value.length; i++) {
                                 str += '<li class="item flex flex-justify--between btnli">\
                         <input type="text" placeholder="按鈕標題" class="inp title" data-id="' + node.id + '" data-type="' + node.type + '" value="' + node.btnTitle.value[i].btnName + '">\
-                        <button type="button" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" class="card-btn card-grey add_material"><i class="fa fa-plus-square-o bigger-120"></i></button>\
+                        <button type="button" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-way="' + node.btnTitle.type + '" data-action="add-flow" class="card-btn card-grey add_material"><i class="fa fa-plus-square-o bigger-120"></i></button>\
                         <button type="button" data-id="' + node.id + '" data-value="" data-action="add-forward" class="card-btn card-grey"><i class="fa fa-share bigger-120"></i></button>\
                         <button type="button" data-id="' + node.id + '" data-value="' + node.btnTitle.value[i].phone + '" data-action="add-phone" class="card-btn card-grey"><i class="fa fa-phone bigger-120"></i></button>\
                         <button type="button" data-id="' + node.id + '" data-type="' + node.btnTitle.value[i].url + '" data-action="add-url" class="card-btn card-grey"><i class="fa fa-link bigger-120"></i></button>\
@@ -505,7 +514,7 @@
                         <div class="card-quick-replies quick_btn_div_contaiter">';
                         if (node.btnTitle.value.length > 0) {
                             for (var i = 0; i < node.btnTitle.value.length; i++) {
-                                str += '<div class="item quick_item"><div class="flex flex-justify--between"><input type="text" placeholder="按鈕標題" data-id="' + node.id + '" data-type="' + node.type + '" value="' + node.btnTitle.value[i].btnName + '" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" data-index="' + i + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div></div>';
+                                str += '<div class="item quick_item"><div class="flex flex-justify--between"><input type="text" placeholder="按鈕標題" data-id="' + node.id + '" data-type="' + node.type + '" data-way="' + node.btnTitle.type + '" value="' + node.btnTitle.value[i].btnName + '" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" data-index="' + i + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div></div>';
                             }
                         };
                         str += '<div class="item item-nogap quick_btn_div" data-id="' + node.id + '" data-type="' + node.type + '">\
@@ -571,7 +580,7 @@
                     }
                 ];
                 var str = '<div class="flow-item" data-id="' + node.id + '">\
-                <button type="button" class="card-btn card-grey" title="删除" data-id="' + node.id + '" data-type="text" data-action="del-all"> <i class="fa fa-trash-o bigger-120"></i></button>\
+                <button type="button" class="card-btn card-grey" title="删除" data-id="' + node.id + '" data-action="del-all"> <i class="fa fa-trash-o bigger-120"></i></button>\
                 <p class="flow-tit">请點選以下任意素材，開始建立</p>';
                 for (var i = 0; i < tempArr.length; i++) {
                     str += '<button data-id="' + node.id + '" data-type="' + tempArr[i].type + '" class="btn btn-app"><i class="ace-icon fa size-18 ' + tempArr[i].icon + '"></i>' + tempArr[i].text + '</button>';
