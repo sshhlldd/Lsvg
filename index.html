@@ -487,10 +487,10 @@
                         type: 'text',
                         content: { //头部内容例如文字，图片，链接等信息
                             text: "我知道我知道", //头部文字描述
-                            imgsrc: "" //头部img
+                            imgsrc: "" //头部imgsrc
                         },
                         btnTitle: {
-                            type: 'default', //@quick快速回复，default普通回复
+                            type: 'default', //@quick快速回复，default普通回复,null默认
                             value: [{
                                 btnName: "我是按钮文字", //按钮文字
                                 phone: "", //电话号码
@@ -510,7 +510,20 @@
                         name: '我是二列图片',
                         type: 'img',
                         content: { //头部内容例如文字，图片，链接等信息
-                            text: "我知道我知道" //头部文字描述
+                            text: "", //头部文字描述
+                            imgsrc: ""
+                        },
+                        btnTitle: {
+                            type: 'quick', //@quick快速回复，default普通回复,null默认
+                            value: [{
+                                btnName: "我是按钮文字", //按钮文字
+                                phone: "", //电话号码
+                                url: "" //外链地址
+                            }, {
+                                btnName: "我是按钮文字",
+                                phone: "",
+                                url: ""
+                            }], //按钮内容
                         }
                     }, {
                         rid: '100',
@@ -520,7 +533,10 @@
                         content: { //头部内容例如文字，图片，链接等信息
                             text: "我知道我知道" //头部文字描述
                         },
-
+                        btnTitle: {
+                            type: null,
+                            value: []
+                        }
                     }]
                 ],
                 [
@@ -532,41 +548,24 @@
                         content: { //头部内容例如文字，图片，链接等信息
                             text: "我知道我知道" //头部文字描述
                         },
+                        btnTitle: {
+                            type: null,
+                            value: []
+                        }
                     }, {
                         rid: '200',
                         id: '320',
-                        name: '我是三列2组图片',
+                        name: '我是三列2组文字',
                         type: 'text',
                         content: { //头部内容例如文字，图片，链接等信息
                             text: "我知道我知道" //头部文字描述
                         },
-                    }],
-                    /*  [{
-                         rid: '210',
-                         id: '310',
-                         name: '我是三列2组文字',
-                         type: 'text'
-                     }] */
-                ],
-                /*  [
-                    [{
-                        rid: '300',
-                        id: '400',
-                        name: '我是四列1组图片',
-                        type: 'img'
-                    }, {
-                        rid: '300',
-                        id: '410',
-                        name: '我是四列1组图片',
-                        type: 'img'
-                    }],
-                    [{
-                        rid: '310',
-                        id: '420',
-                        name: '我是四列2组文字',
-                        type: 'text'
+                        btnTitle: {
+                            type: null,
+                            value: []
+                        }
                     }]
-                ] */
+                ]
             ]
 
 
@@ -594,6 +593,7 @@
                     $("#myflowcon").mCustomScrollbar("update");
 
                 }
+
 
             })
         </script>
