@@ -487,59 +487,119 @@
                     s += tempImgText(node);
                     break;
                 case 'catalog':
-                    s += tempText(node);
+                    s += tempCatalog(node);
                     break;
                 case 'video':
-                    s += tempText(node);
+                    s += tempVideo(node);
                     break;
                 case 'audio':
-                    s += tempText(node);
+                    s += tempAudio(node);
                     break;
                 case 'file':
-                    s += tempText(node);
+                    s += tempFile(node);
                     break;
                 default:
                     s += tempInit(node);
 
             }
             return s;
-            //图文模板
-            function tempImgText(node) {
-                var str = '<div class="flow-item" style="" data-id="' + node.id + '">\
+            //档案模块
+            function tempFile(node) {
+                var str = '<div class="flow-item" data-id="' + node.id + '">\
+                <button type="button" class="card-btn card-grey" title="删除" data-id="' + node.id + '" data-type="text" data-action="del-all"> <i class="fa fa-trash-o bigger-120"></i></button>\
                 <div class="row form-group form-horizontal">\
                     <label class="col-xs-4 no-padding-right control-label">素材名稱<span class="required" aria-required="true">* </span></label>\
-                    <div class="col-xs-8 no-padding-right"><input type="text" class="form-control" name=""></div>\
+                    <div class="col-xs-8 no-padding-right"><input type="text" data-id="' + node.id + '" data-action="edit-name" class="form-control" value="' + node.name + '" name="name"></div>\
                 </div>\
-                <div class="card clearfix">\
-                    <div class="col-xs-12 col-sm-4 no-padding mCustomScrollbar _mCS_1 mCS_no_scrollbar" id="">\
-                        <div id="" class="mCustomScrollBox mCS-light mCSB_horizontal mCSB_inside" style="max-height: none;" tabindex="0">\
-                            <div id="" class="mCSB_container mCS_x_hidden mCS_no_scrollbar_x" style="" dir="ltr">\<div>\
-                                    <div class="card-div">\
-                                        <div class="card-element"><label class="card-element_image"> <div class="noimage"> <i class="fa fa-camera"></i> <span class="text">圖片大小為 1MB 以下</span> </div> <div class="image-uploader js-root-dropzone image" id="image-upload-0"> </div> <input type="hidden" name="image_url" id="image_url_0" value="" class="inp"> </label>\
-                                            <div class="card-element_text"><input type="text" value="" id="title_0" placeholder="標題  建議80個字符以內" class="inp"></div>\
-                                            <div class="card-element_text"><textarea placeholder="描述  建議80個字符以內" class="area" id="desc_0"></textarea></div>\
-                                            <div class="card-element_text"><input type="url" value="" placeholder="網址" class="inp" id="web_url_0"></div>\
-                                            <ul class="text-card-button btn_div_contaiter" id="contaiter_0">\
-                                                <li class="item item-nogap flex flex-justify--between add-btn"> <button type="button" class="card-btn card-grey add bigger-125"> <i class="fa fa-plus-circle"></i> <span>按鈕</span> </button> </li>\
-                                            </ul>\
-                                        </div>\
-                                    </div>\
-                                </div>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="quick_div">\
-                    <div class="or">或</div>\
-                        <div class="card-quick-replies quick_btn_div_contaiter">\
-                            <div class="item item-nogap quick_btn_div" data-id="' + node.id + '" data-type="' + node.type + '">\
-                                <div class="flex flex-justify--between"> <button type="button" class="card-btn card-grey add bigger-125 add_quick_btn"> <i class="fa fa-plus-circle"></i> <span>快速回覆</span> </button> </div>\
-                            </div>\
-                        </div>\
-                    </div>\
-                </div>\
-            </div>';
+                <div class="card clearfix"><div class="card-div">\
+                <div class="card-element">\
+                <label class="card-element_image"> <div class="noimage"> <i class="fa fa-file"></i> <span class="text">pdf、zip、doc、xls、ppt<br>音訊大小為 25MB  以內</span> </div> <div class="image-uploader js-root-dropzone image" id="image-upload-0"> </div></label>';
+                str += btnStr(node, item);
+                str += '</div></div>';
                 return str;
             }
+            //音讯模板
+            function tempAudio(node) {
+                var str = '<div class="flow-item" data-id="' + node.id + '">\
+                <button type="button" class="card-btn card-grey" title="删除" data-id="' + node.id + '" data-type="text" data-action="del-all"> <i class="fa fa-trash-o bigger-120"></i></button>\
+                <div class="row form-group form-horizontal">\
+                    <label class="col-xs-4 no-padding-right control-label">素材名稱<span class="required" aria-required="true">* </span></label>\
+                    <div class="col-xs-8 no-padding-right"><input type="text" data-id="' + node.id + '" data-action="edit-name" class="form-control" value="' + node.name + '" name="name"></div>\
+                </div>\
+                <div class="card clearfix"><div class="card-div">\
+                <div class="card-element">\
+                <label class="card-element_image"> <div class="noimage"> <i class="fa fa-volume-up"></i> <span class="text">點此上傳<br>音訊大小為 25MB  以內</span> </div> <div class="image-uploader js-root-dropzone image" id="image-upload-0"> </div></label>';
+                str += btnStr(node, item);
+                str += '</div></div>';
+                return str;
+            }
+            //影片模板
+            function tempVideo(node) {
+                var str = '<div class="flow-item" data-id="' + node.id + '">\
+                <button type="button" class="card-btn card-grey" title="删除" data-id="' + node.id + '" data-type="text" data-action="del-all"> <i class="fa fa-trash-o bigger-120"></i></button>\
+                <div class="row form-group form-horizontal">\
+                    <label class="col-xs-4 no-padding-right control-label">素材名稱<span class="required" aria-required="true">* </span></label>\
+                    <div class="col-xs-8 no-padding-right"><input type="text" data-id="' + node.id + '" data-action="edit-name" class="form-control" value="' + node.name + '" name="name"></div>\
+                </div>\
+                <div class="card clearfix"><div class="card-div">\
+                <div class="card-element">\
+                <label class="card-element_image"> <div class="noimage"> <i class="fa fa-youtube-play"></i> <span class="text">點此上傳<br>影片大小為 25MB 以內</span> </div> <div class="image-uploader js-root-dropzone image" id="image-upload-0"> </div></label>';
+                str += btnStr(node, item);
+                str += '</div></div>';
+                return str;
+            }
+            //型录模板
+            function tempCatalog(node) {
+                var str = '<div class="flow-item" data-id="' + node.id + '">\
+                <button type="button" class="card-btn card-grey" title="删除" data-id="' + node.id + '" data-type="text" data-action="del-all"> <i class="fa fa-trash-o bigger-120"></i></button>\
+                <div class="row form-group form-horizontal">\
+                    <label class="col-xs-4 no-padding-right control-label">素材名稱<span class="required" aria-required="true">* </span></label>\
+                    <div class="col-xs-8 no-padding-right"><input type="text" data-id="' + node.id + '" data-action="edit-name" class="form-control" value="' + node.name + '" name="name"></div>\
+                </div>\
+                <div class="row form-group form-horizontal">\
+                <label class="col-xs-7 no-padding-right control-label">設置第一個為主內容<span class="required" aria-required="true">* </span></label>\
+                    <div class="col-xs-5 no-padding-right"><select data-id="' + node.id + '" class="form-control">\
+                    <option value="1">是</option>\
+                    <option value="2">否</option>\
+                </select></div>\
+                </div>\
+                <div class="row form-group form-horizontal">\
+                <label class="col-xs-5 no-padding-right control-label">更多按鈕標題<span class="required" aria-required="true">* </span></label>\
+                    <div class="col-xs-7 no-padding-right"><input type="text" data-id="' + node.id + '" data-action="edit-name" class="form-control"></div>\
+                </div>\
+                <div class="row form-group form-horizontal">\
+                <label class="col-xs-5 no-padding-right control-label">更多按鈕URL<span class="required" aria-required="true">* </span></label>\
+                    <div class="col-xs-7 no-padding-right"><input type="text" data-id="' + node.id + '" data-action="edit-name" class="form-control"></div>\
+                </div>\
+                <div class="card clearfix"><div class="card-div">\
+                <div class="card-element">\
+                <label class="card-element_image"> <div class="noimage"> <i class="fa fa-camera"></i> <span class="text">圖片大小為 1MB 以下</span> </div> <div class="image-uploader js-root-dropzone image" id="image-upload-0"> </div></label>\
+                <div class="card-element_text"><input type="text" value="" placeholder="標題  建議80個字符以內" class="inp"></div>\
+                <div class="card-element_text"><textarea placeholder="描述  建議80個字符以內" class="area"></textarea></div>\
+                <div class="card-element_text"><input type="url" value="" placeholder="網址" class="inp"></div>'
+                str += '</div></div>';
+                str += '</div></div>';
+                return str;
+            }
+            //图文模板
+            function tempImgText(node) {
+                var str = '<div class="flow-item" data-id="' + node.id + '">\
+                <button type="button" class="card-btn card-grey" title="删除" data-id="' + node.id + '" data-type="text" data-action="del-all"> <i class="fa fa-trash-o bigger-120"></i></button>\
+                <div class="row form-group form-horizontal">\
+                    <label class="col-xs-4 no-padding-right control-label">素材名稱<span class="required" aria-required="true">* </span></label>\
+                    <div class="col-xs-8 no-padding-right"><input type="text" data-id="' + node.id + '" data-action="edit-name" class="form-control" value="' + node.name + '" name="name"></div>\
+                </div>\
+                <div class="card clearfix"><div class="card-div">\
+                <div class="card-element">\
+                <label class="card-element_image"> <div class="noimage"> <i class="fa fa-camera"></i> <span class="text">圖片大小為 1MB 以下</span> </div> <div class="image-uploader js-root-dropzone image" id="image-upload-0"> </div></label>\
+                <div class="card-element_text"><input type="text" value="" placeholder="標題  建議80個字符以內" class="inp"></div>\
+                <div class="card-element_text"><textarea placeholder="描述  建議80個字符以內" class="area"></textarea></div>\
+                <div class="card-element_text"><input type="url" value="" placeholder="網址" class="inp"></div>'
+                str += btnStr(node, item);
+                str += '</div></div>';
+                return str;
+            }
+
             //图片模板
             function tempImg(node) {
                 var str = '<div class="flow-item" data-id="' + node.id + '">\
@@ -550,10 +610,10 @@
                 </div>\
                 <div class="card clearfix"><div class="card-div">\
                 <div class="card-element">\
-                <label class="card-element_image"> <div class="noimage"> <i class="fa fa-camera"></i> <span class="text">圖片大小為 1MB 以下</span> </div> <div class="image-uploader js-root-dropzone image" id="image-upload-0"> </div></label>';
+                <label class="card-element_image"> <div class="noimage"> <i class="fa fa-camera" style="top:40%;font-size:40px;"></i> <span class="text">点此上传<br />圖片大小為 1MB 以下</span> </div> <div class="image-uploader js-root-dropzone image" id="image-upload-0"> </div></label>';
                 str += btnStr(node, item);
                 str += '</div></div>';
-                return str;       
+                return str;
             }
             //文字模板
             function tempText(node) {
@@ -613,14 +673,14 @@
 
                 } else {
                     //没有btn的时候显示默认的回复和快速回复按钮
-                    if (node.type === 'text') {
+                    if (node.type === 'text' || node.type === 'img-text') {
                         btnStr += '<ul class="text-card-button btn_div_contaiter" id=""><li  data-id="' + node.id + '" data-type="' + node.type + '" class="item item-nogap flex flex-justify--between add-btn">\
                         <button type="button" class="card-btn card-grey add bigger-125"><i class="fa fa-plus-circle"></i><span>按鈕</span></button>\
                         </li></ul>';
                     }
                     btnStr += '</div></div>';
                     btnStr += '<div class="quick_div">';
-                    if (node.type === 'text') {
+                    if (node.type === 'text' || node.type === 'img-text') {
                         btnStr += '<div class="or">或</div>';
                     }
                     btnStr += '<div class="card-quick-replies quick_btn_div_contaiter" >\
