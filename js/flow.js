@@ -30,7 +30,7 @@
                         text: "我知道我知道", //头部文字描述
                         imgsrc: "" //头部img
                     },
-                    btnTitle: {
+                    btnInfo: {
                         type: null,
                         value: []
                     }
@@ -125,7 +125,7 @@
                         text: "",
                         imgsrc: "",
                     },
-                    btnTitle: {
+                    btnInfo: {
                         type: null,
                         value: [],
                     }
@@ -157,7 +157,7 @@
                 $('.btn_phone').on("blur", function() {
                     var phone = $(this).val();
                     var item = self.findParent(id);
-                    item.node.btnTitle.value[idx].phone = phone;
+                    item.node.btnInfo.value[idx].phone = phone;
                     self.renderDom();
                 })
 
@@ -178,7 +178,7 @@
                 $('.btn_url').on("blur", function() {
                     var url = $(this).val();
                     var item = self.findParent(id);
-                    item.node.btnTitle.value[idx].url = url;
+                    item.node.btnInfo.value[idx].url = url;
                     self.renderDom();
                 })
 
@@ -206,7 +206,7 @@
                 var id = $(this).attr('data-id');
                 var idx = $(this).attr('data-index');
                 var item = self.findParent(id);
-                item.node.btnTitle.value[idx].btnName = value;
+                item.node.btnInfo.value[idx].btnName = value;
                 console.log(self.config.data);
                 self.renderDom();
             })
@@ -278,12 +278,12 @@
             var that = this;
             var flag = false; //判断插入的元素有没有分组
             var item = this.findParent(child.rid);
-            item.node.btnTitle.value.push({
+            item.node.btnInfo.value.push({
                 btnName: "",
                 phone: "",
                 url: ""
             });
-            item.node.btnTitle.type = way;
+            item.node.btnInfo.type = way;
             //如果下一列没有元素直接插入返回
             if (item.fi === this.config.data.length - 1) {
                 var arrobj = [
@@ -366,7 +366,7 @@
             var idx = $('.add_material[data-cid=' + id + ']').attr('data-index');
             var pitem = this.findParent(pid);
             if (pitem.node.length !== 0) {
-                pitem.node.btnTitle.value.splice(idx, 1);
+                pitem.node.btnInfo.value.splice(idx, 1);
             }
 
 
@@ -634,18 +634,22 @@
             function btnStr(node, item) {
                 var btnStr = "";
                 //判断是否有btn属性
-                if (node.btnTitle.value.length > 0) {
+                if (node.btnInfo.value.length > 0) {
                     //如果btn是普通回复
-                    if (node.btnTitle.type === 'default') {
+                    if (node.btnInfo.type === 'default') {
                         btnStr += '<ul class="text-card-button btn_div_contaiter">';
 
-                        for (var i = 0; i < node.btnTitle.value.length; i++) {
+                        for (var i = 0; i < node.btnInfo.value.length; i++) {
                             btnStr += '<li class="item flex flex-justify--between btnli">\
-                        <input type="text" placeholder="按鈕標題" class="inp title" data-index="' + i + '" data-id="' + node.id + '" data-action="edit-btnName" value="' + node.btnTitle.value[i].btnName + '">\
-                        <button type="button" data-index="' + i + '" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-way="' + node.btnTitle.type + '" data-action="add-flow" class="card-btn card-grey add_material"><i class="fa fa-plus-square-o bigger-120"></i></button>\
-                        <button type="button" data-index="' + i + '" data-id="' + node.id + '" data-value="" data-action="add-forward" class="card-btn card-grey"><i class="fa fa-share bigger-120"></i></button>\
-                        <button type="button" data-index="' + i + '" data-id="' + node.id + '" data-value="' + node.btnTitle.value[i].phone + '" data-action="add-phone" class="card-btn card-grey"><i class="fa fa-phone bigger-120"></i></button>\
-                        <button type="button" data-index="' + i + '" data-id="' + node.id + '" data-value="' + node.btnTitle.value[i].url + '" data-action="add-url" class="card-btn card-grey"><i class="fa fa-link bigger-120"></i></button>\
+                        <button type="button" class="card-btn card-grey"  data-index="' + i + '" data-id="' + node.id + '" data-action="del-btn"><i class="fa fa-trash-o bigger-120"></i></button>\
+                        <input type="text" placeholder="按鈕標題" class="inp title" data-index="' + i + '" data-id="' + node.id + '" data-action="edit-btnName" value="' + node.btnInfo.value[i].btnName + '">\
+                        <button type="button" data-index="' + i + '" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-way="' + node.btnInfo.type + '" data-action="add-flow" class="card-btn card-grey add_material"><i class="fa fa-plus-square-o bigger-120"></i></button>';
+                            if (node.type === 'img-text') {
+                                btnStr += '<button type="button" data-index="' + i + '" data-id="' + node.id + '" data-value="" data-action="add-forward" class="card-btn card-grey"><i class="fa fa-share bigger-120"></i></button>';
+                            }
+
+                            btnStr += '<button type="button" data-index="' + i + '" data-id="' + node.id + '" data-value="' + node.btnInfo.value[i].phone + '" data-action="add-phone" class="card-btn card-grey"><i class="fa fa-phone bigger-120"></i></button>\
+                        <button type="button" data-index="' + i + '" data-id="' + node.id + '" data-value="' + node.btnInfo.value[i].url + '" data-action="add-url" class="card-btn card-grey"><i class="fa fa-link bigger-120"></i></button>\
                         </li>';
                         }
 
@@ -656,12 +660,12 @@
                     }
                     btnStr += '</div></div>'
                         //如果btn是快速回复
-                    if (node.btnTitle.type === 'quick') {
+                    if (node.btnInfo.type === 'quick') {
                         btnStr += '<div class="quick_div">\
                         <div class="card-quick-replies quick_btn_div_contaiter">';
 
-                        for (var i = 0; i < node.btnTitle.value.length; i++) {
-                            btnStr += '<div class="item quick_item"><div class="flex flex-justify--between"><input type="text" placeholder="按鈕標題" data-action="edit-btnName" data-index="' + i + '" data-id="' + node.id + '"  value="' + node.btnTitle.value[i].btnName + '" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" data-index="' + i + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div></div>';
+                        for (var i = 0; i < node.btnInfo.value.length; i++) {
+                            btnStr += '<div class="item quick_item"><div class="flex flex-justify--between"> <button type="button" class="card-btn card-grey"  data-index="' + i + '" data-id="' + node.id + '" data-action="del-btn"><i class="fa fa-trash-o bigger-120"></i></button><input type="text" placeholder="按鈕標題" data-action="edit-btnName" data-index="' + i + '" data-id="' + node.id + '"  value="' + node.btnInfo.value[i].btnName + '" class="inp title"> <button type="button" class="card-btn card-grey add_material" data-cid="' + item.node[i].id + '" data-id="' + node.id + '" data-type="' + node.type + '" data-action="add-flow" data-index="' + i + '"> <i class="fa fa-plus-square-o bigger-120"></i> </button> </div></div>';
                         }
 
                         btnStr += '<div class="item item-nogap quick_btn_div" data-id="' + node.id + '" data-type="' + node.type + '">\

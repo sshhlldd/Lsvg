@@ -476,7 +476,7 @@
         <script src="./js/flow.js"></script>
         <script>
             /*type类型7种： text:文字区块, img:單一圖片區塊, img-text:图文组合, catalog：型录, video:影片, audio:音讯, file:档案*/
-            //整体为一个数组，第一层数组代表渲染的每一列，第二层数组代表每一列中的分组；分组中的rid是一致的rid关联父元素id；id是唯一的，第三层数组分组中的单元模块。
+            //整体为一个数组，第一层数组代表渲染的每一列，第二层数组代表每一列中的分组；分组中的rid是关联父元素id；id是唯一的，第三层数组分组中的单元模块。
 
             var otherData = [
                 [
@@ -489,7 +489,7 @@
                             text: "我知道我知道", //头部文字描述
                             imgsrc: "" //头部imgsrc
                         },
-                        btnTitle: {
+                        btnInfo: {
                             type: 'default', //@quick快速回复，default普通回复,null默认
                             value: [{
                                 btnName: "我是按钮文字", //按钮文字
@@ -513,7 +513,7 @@
                             text: "", //头部文字描述
                             imgsrc: ""
                         },
-                        btnTitle: {
+                        btnInfo: {
                             type: 'quick', //@quick快速回复，default普通回复,null默认
                             value: [{
                                 btnName: "我是按钮文字", //按钮文字
@@ -533,7 +533,7 @@
                         content: { //头部内容例如文字，图片，链接等信息
                             text: "我知道我知道" //头部文字描述
                         },
-                        btnTitle: {
+                        btnInfo: {
                             type: null,
                             value: []
                         }
@@ -548,7 +548,7 @@
                         content: { //头部内容例如文字，图片，链接等信息
                             text: "我知道我知道" //头部文字描述
                         },
-                        btnTitle: {
+                        btnInfo: {
                             type: null,
                             value: []
                         }
@@ -560,7 +560,7 @@
                         content: { //头部内容例如文字，图片，链接等信息
                             text: "我知道我知道" //头部文字描述
                         },
-                        btnTitle: {
+                        btnInfo: {
                             type: null,
                             value: []
                         }
