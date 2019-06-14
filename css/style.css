@@ -1489,7 +1489,42 @@ div.checker {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.card-grey.green:hover {
+    color: green !important;
+}
+/*tip*/
 
+.my_tip {
+    position: fixed;
+    top: -40px;
+    left: 30%;
+    width: 40%;
+    z-index: 999;
+}
+
+.tip_body {
+    text-align: center;
+    padding: 10px 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+@-webkit-keyframes mytip-in {
+    0% {
+        top: -40px;
+    }
+    100% {
+        top: 10px;
+    }
+}
+
+.animation-mytip-in {
+    display: block;
+    -webkit-animation: mytip-in ease-in 0.5s forwards;
+}
+
+
+/*end-tip*/
 
 /*流程 end*/
 

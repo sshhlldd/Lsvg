@@ -492,13 +492,18 @@
                         btnInfo: {
                             type: 'default', //@quick快速回复，default普通回复,null默认
                             value: [{
-                                btnName: "我是按钮文字", //按钮文字
-                                phone: "", //电话号码
-                                url: "" //外链地址
+                                btnName: "我的流程", //按钮名称
+                                btnVal:{
+                                    name:"flow",  //flow share phone url 四个按钮名称
+                                    value:"200"//如果是flow value值为子流程id
+                                }
+
                             }, {
-                                btnName: "我是按钮文字",
-                                phone: "",
-                                url: ""
+                                btnName: "我得电话",
+                                btnVal:{
+                                    name:'phone',
+                                    value:'12210'
+                                }
                             }], //按钮内容
                         }
                     }]
@@ -517,25 +522,17 @@
                             type: 'quick', //@quick快速回复，default普通回复,null默认
                             value: [{
                                 btnName: "我是按钮文字", //按钮文字
-                                phone: "", //电话号码
-                                url: "" //外链地址
+                                btnVal:{
+                                    name:"flow",  //flow share phone url 四个按钮名称
+                                    value:"300"//如果是flow value值为子流程id
+                                }
                             }, {
                                 btnName: "我是按钮文字",
-                                phone: "",
-                                url: ""
+                                btnVal:{
+                                    name:"flow",  //flow share phone url 四个按钮名称
+                                    value:"320"//如果是flow value值为子流程id
+                                }
                             }], //按钮内容
-                        }
-                    }, {
-                        rid: '100',
-                        id: '210',
-                        name: '我是二列文字',
-                        type: 'text',
-                        content: { //头部内容例如文字，图片，链接等信息
-                            text: "我知道我知道" //头部文字描述
-                        },
-                        btnInfo: {
-                            type: null,
-                            value: []
                         }
                     }]
                 ],
@@ -550,7 +547,7 @@
                         },
                         btnInfo: {
                             type: null,
-                            value: []
+                            value:[]
                         }
                     }, {
                         rid: '200',
@@ -562,7 +559,7 @@
                         },
                         btnInfo: {
                             type: null,
-                            value: []
+                            value:[]
                         }
                     }]
                 ]
