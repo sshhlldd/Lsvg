@@ -1492,6 +1492,17 @@ div.checker {
 .card-grey.green:hover {
     color: green !important;
 }
+.card input[type="file"]{
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+.card .imgcon{
+    overflow: hidden;
+}
+.card .imgcon img{
+    width:100%;
+}
 /*tip*/
 
 .my_tip {
